@@ -1,0 +1,10 @@
+# Visual Studio
+.vs/
+out/
+CMakeSettings.json
+
+# Vcpkg
+vcpkg_installed/
+
+# Vim
+*.sw*
