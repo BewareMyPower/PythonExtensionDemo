@@ -8,3 +8,5 @@ vcpkg_installed/
 
 # Vim
 *.sw*
+
+*.so
