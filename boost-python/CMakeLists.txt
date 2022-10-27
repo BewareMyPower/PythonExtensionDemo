@@ -26,20 +26,30 @@ if (MSVC)
     add_definitions(-DBOOST_PYTHON_STATIC_LIB)
 endif ()
 
-find_package (Python3 REQUIRED COMPONENTS Development)
+set(CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/vcpkg_installed/x64-windows-static")
+message(STATUS "CMAKE_PREFIX_PATH: " ${CMAKE_PREFIX_PATH})
+
+find_package(Boost REQUIRED ${Boost_INCLUDE_DIRS})
+message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
+
+find_package (Python3 REQUIRED COMPONENTS Development.Module)
 message(STATUS "PYTHON: " ${Python3_VERSION} " - " ${Python3_INCLUDE_DIRS})
 message(STATUS "Python3_LIBRARIES: " ${Python3_LIBRARIES})
 
-#set(Boost_USE_STATIC_LIBS ON)
-find_package(Boost REQUIRED COMPONENTS python38)
-message(STATUS "Boost_INCLUDE_DIRS: " ${Boost_INCLUDE_DIRS})
-message(STATUS "Boost_PYTHON38_LIBRARIES: " ${Boost_PYTHON38_LIBRARIES})
+set(Boost_USE_STATIC_LIBS ON)
+find_package(Boost REQUIRED COMPONENTS python310)
+message(STATUS "Boost Python3: " ${Boost_PYTHON310_LIBRARY})
+
+find_library(ZLIB_LIBRARIES NAMES "zlib")
+message(STATUS "ZLIB_LIBRARIES: " ${ZLIB_LIBRARIES})
 
 add_library(hello SHARED hello.cc)
 include_directories(
+    ${Boost_INCLUDE_DIRS}
     ${Python3_INCLUDE_DIRS}
 )
 target_link_libraries(hello PRIVATE
-    ${Boost_PYTHON38_LIBRARIES}
+    ${Boost_PYTHON310_LIBRARY}
     ${Python3_LIBRARIES}
+    ${ZLIB_LIBRARIES}
 )

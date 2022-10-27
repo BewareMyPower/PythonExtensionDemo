@@ -1,5 +1,15 @@
 # Python C++ Extension
 
+## Windows
+
+```PowerShell
+vcpkg install --feature-flags=manifests --triplet x64-windows-static
+cmake -B build
+cmake --build build
+```
+
+## Linux
+
 ```bash
 $ cmake -B build
 $ cmake --build build
