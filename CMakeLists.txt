@@ -1,8 +1,7 @@
 ﻿cmake_minimum_required (VERSION 3.12)
 
-project ("CMakePythonExtension")
+project ("CMakePythonExtension" C)
 
-set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 find_package(PythonLibs REQUIRED)
@@ -20,5 +19,5 @@ include_directories(
 
 set(CMAKE_SHARED_LIBRARY_SUFFIX ".pyd")
 
-add_library(xyz SHARED module.cc)
+add_library(xyz SHARED module.c)
 target_link_libraries(xyz ${PYTHON_LIBRARIES})

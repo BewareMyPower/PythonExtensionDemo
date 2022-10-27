@@ -1,7 +1,8 @@
 #include <Python.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-PyObject* f(PyObject*, PyObject* o) {
+PyObject* f(PyObject* ignored, PyObject* o) {
     double x = PyFloat_AsDouble(o);
     double y = x + 100;
     printf("%.2lf + 100.00 = %.2lf\n", x, y);
@@ -9,8 +10,8 @@ PyObject* f(PyObject*, PyObject* o) {
 }
 
 static PyMethodDef methods[] = {
-    { "f", (PyCFunction) f, METH_O, nullptr },
-    { nullptr, nullptr, 0, nullptr }
+    { "f", (PyCFunction) f, METH_O, NULL },
+    { NULL, NULL, 0, NULL }
 };
 
 static PyModuleDef py_module = {
