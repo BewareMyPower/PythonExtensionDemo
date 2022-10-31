@@ -28,10 +28,23 @@ if (MSVC)
 endif ()
 
 find_package(Python3 REQUIRED COMPONENTS Development)
-find_package(Boost REQUIRED COMPONENTS python310)
+
+set(BOOST_PYTHON_NAME_LIST python3 python310 python39 python38 python37)
+foreach (BOOST_PYTHON_NAME IN LISTS BOOST_PYTHON_NAME_LIST)
+    find_package(Boost QUIET COMPONENTS ${BOOST_PYTHON_NAME})
+    if (${Boost_FOUND})
+        set(BOOST_PYTHON_NAME_FOUND ${BOOST_PYTHON_NAME})
+        message(STATUS "Found Boost COMPONENTS " ${BOOST_PYTHON_NAME_FOUND})
+        break ()
+    endif ()
+endforeach ()
+if (NOT BOOST_PYTHON_NAME_FOUND)
+    message(FATAL_ERROR "Could not find Boost Python library")
+endif ()
+find_package(Boost REQUIRED COMPONENTS ${BOOST_PYTHON_NAME_FOUND})
 
 add_library(hello SHARED hello.cc)
 target_link_libraries(hello PRIVATE
-    Boost::python310
+    Boost::${BOOST_PYTHON_NAME_FOUND}
     Python3::Module
 )
