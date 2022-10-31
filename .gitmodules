@@ -1,0 +1,3 @@
+[submodule "boost-python/vcpkg"]
+	path = boost-python/vcpkg
+	url = https://github.com/microsoft/vcpkg.git

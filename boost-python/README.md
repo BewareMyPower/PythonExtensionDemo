@@ -1,19 +1,9 @@
 # Python C++ Extension
 
-## Windows
+## Build
 
 ```PowerShell
-vcpkg install --feature-flags=manifests --triplet x64-windows-static
+git submodule update --init
 cmake -B build
-cmake --build build
-```
-
-## Linux
-
-```bash
-$ cmake -B build
-$ cmake --build build
-$ cp ./build/libhello.so hello.so
-$ python3 -c 'import hello; print(hello.hello());'
-hello, world
+cmake --build build --config Release
 ```
