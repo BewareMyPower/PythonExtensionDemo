@@ -17,34 +17,26 @@
 # under the License.
 #
 
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.18)
 
+set(VCPKG_OVERLAY_TRIPLETS ${CMAKE_SOURCE_DIR}/triplets)
+set(VCPKG_TARGET_TRIPLET x64-windows-static-boost)
 set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake"
     CACHE STRING "Vcpkg toolchain file")
 project (boost-python-demo)
 
 if (MSVC)
-    SET(CMAKE_SHARED_LIBRARY_SUFFIX .pyd)
+    set(CMAKE_SHARED_LIBRARY_SUFFIX .pyd)
 endif ()
 
-find_package(Python3 REQUIRED COMPONENTS Development)
+find_package(Python3 REQUIRED COMPONENTS Development.Module)
+find_package(Boost REQUIRED COMPONENTS python310)
 
-set(BOOST_PYTHON_NAME_LIST python3 python310 python39 python38 python37)
-foreach (BOOST_PYTHON_NAME IN LISTS BOOST_PYTHON_NAME_LIST)
-    find_package(Boost QUIET COMPONENTS ${BOOST_PYTHON_NAME})
-    if (${Boost_FOUND})
-        set(BOOST_PYTHON_NAME_FOUND ${BOOST_PYTHON_NAME})
-        message(STATUS "Found Boost COMPONENTS " ${BOOST_PYTHON_NAME_FOUND})
-        break ()
-    endif ()
-endforeach ()
-if (NOT BOOST_PYTHON_NAME_FOUND)
-    message(FATAL_ERROR "Could not find Boost Python library")
-endif ()
-find_package(Boost REQUIRED COMPONENTS ${BOOST_PYTHON_NAME_FOUND})
-
+add_compile_definitions(BOOST_PYTHON_STATIC_LIB)
 add_library(hello SHARED hello.cc)
 target_link_libraries(hello PRIVATE
-    Boost::${BOOST_PYTHON_NAME_FOUND}
+    Boost::python310
     Python3::Module
 )
+set_property(TARGET hello PROPERTY
+    MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")

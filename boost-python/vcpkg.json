@@ -1,12 +1,12 @@
 {
   "name": "hello",
   "version": "0.0.1",
-  "description": "Hello",
+  "description": "An example Python extension written with Boost.Python",
   "dependencies": [
      {
        "name": "boost-python",
-       "version>=": "1.76.0"
+       "version>=": "1.79.0"
      }
   ],
-  "builtin-baseline": "35312384e7701760ed7855961eff41a63f9cc379"
+  "builtin-baseline": "c266859544a3cdcfd952d218039c55a268863740"
 }
